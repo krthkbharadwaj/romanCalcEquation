@@ -4,7 +4,7 @@ block content
   h1= title
   p Welcome to #{title}
   
-  form(id='calc', method='POST', action='/calculate')
+  form(id='calc', method='POST', action='/calc')
           .form-group
           label(for='first') First roman numeric
           <br />
@@ -19,3 +19,5 @@ block content
           input(type='text', name='third', class='form-control', id='third', placeholder='Enter the third Roman numeral')
           .form-group
           button.btn.btn-default Submit
+
+  div(class="result") #{result} 

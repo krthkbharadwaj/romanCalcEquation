@@ -1,39 +1,29 @@
-var express = require('express');
-var router = express.Router();
+exports.equation = function (req) {
 
-/* GET input information from the form, to process the calculator. */
-router.post('/', function (req, res, next) {
-    res.render('result', { title: 'Roman Calculator', result: calculator(req.body) });
-});
-
-module.exports = router;
-
-function calculator(req) {
-    //console.log(req.first);
-    var i, j;
     var arr = [];
-    arr.push(req.first);
-    arr.push(req.second);
-    arr.push(req.third);
+    
+    var f = convert_numeric(req.first);
+    var s = convert_numeric(req.second);
+    var t = convert_numeric(req.third);
+
+    var parArr = [];
+    parArr[f] =req.first;
+    parArr[s] =req.second;
+    parArr[t] =req.third;
+
+    if(f==""||s==""||t==""){
+        return "Please enter proper number";
+    }else{
+        arr.push(f); arr.push(s); arr.push(t);
+    }
     var n = arr.length;
-
-    console.log("arr is " + arr);
-    console.log("n is " + n);
-
-    var leftsum, rightsum;
-
-    /* for(var i=0; i< n; i++) {
-         for(var j=i;j)
-     }*/
-
-    var sum = 0;
-    var leftS = 0;
 
     for (var i = 0; i < arr.length; i++) {
         var sum = 0;
         var equ = [];
         var mul = [];
         var mu = 1;
+        var leftS = 0;
 
         leftS = parseInt(arr[i]);
         for (var j = 0; j < arr.length; j++) {
@@ -49,26 +39,92 @@ function calculator(req) {
         console.log("Left is " + leftS + " Sum is " + sum+" mul is "+mu);
         if (leftS == sum) {
             var out = '';
-            for (var k = 0; k < equ.length; k++) {
-                var operator = '';
-                if (k != 0) {
-                    operator = "+";
+            for (var k = 0; k < arr.length; k++) {
+                if(k==0){
+                    out +=parArr[arr[k]];
+                }else if(k==1 && (i == 0 || i==1)){
+                    out +="-"+parArr[arr[k]]+"=";
+                }else if(k==1 && i == 2){
+                    out +="+"+parArr[arr[k]]+"=";
+                }else if(k==2){
+                    out += parArr[arr[k]];
                 }
-                out += operator + equ[k];
             }
-            return leftS+"="+out;
+            var res = "Equation is "+out;
+            return res;
         }else if(leftS==mu){
             var out = '';
-            for (var k = 0; k < mul.length; k++) {
-                var operator = '';
-                if (k != 0) {
-                    operator = "*";
+            console.log("index is "+i);
+            for (var k = 0; k < arr.length; k++) {
+                if(k==0){
+                    out +=parArr[arr[k]];
+                }else if(k==1 && i == 0){
+                    out +="/"+parArr[arr[k]]+"=";
+                }else if(k==1 && (i == 1 || i==2)){
+                    out +="*"+parArr[arr[k]]+"=";
+                }else if(k==2){
+                    out += parArr[arr[k]];
                 }
-                out += operator + mul[k];
             }
-            return leftS+"="+out;
+            var res = "Equation is "+out;
+            return res;
         }
 
     }
-    return "Can not make mathematical operations";
+    return "Can not make mathematical operations with numbers provided";
+};
+
+var rarr = new Array("M",
+"CM", "D", "CD", "CCC", "CC", "C", "XC", "L", "XL", "XXX", "XX", "X", "IX", "V", "IV", "III", "II", "I");var narr = new Array(1000,900,500,400,300,200,100,90,50,40,30,20,10,9,5,4,3,2,1); var warr = new Array("CMCM",
+"CMD",
+"CMCD", "CMC", "DD", "DCD", "CDCD", "CDC", "CCCC", "XCXC",
+"XCL", "XCXL", "XCX", "LL", "LXL", "XLXL", "XLX", "XXXX", "IXIX",
+"IXV", "IXIV", "IXI", "IVIV", "IVI", "IIII");
+
+var carr= new Array("MDCCC", "MCD",
+"MIII", "M",
+"M",
+"CM",
+"DCCC", "D",
+"CD",
+"CLXXX", "CXL", "CIII", "C",
+"C",
+"XC",
+"LXXX", "L",
+"XL",
+"XVIII", "XIV", "XIII", "X",
+"VIII", "V",
+"IV");
+
+function convert_numeric(rom) { 
+    var roman = rom.replace(/ /g, ""); 
+    roman = roman.toUpperCase(); 
+    roman = roman.replace(/[^IVXLCDM]/g, ""); 
+    //document.getElementById("roman").value = roman; 
+    if (roman.length == 0) { return; } 
+    var position = 0; var result = 0; var pp = -1; 
+    while (position < roman.length) { 
+        var p = getnextletter(roman, position); 
+        if (pp != 0) { 
+            if (narr[pp] < narr[p]) {
+                return; 
+            } 
+        } 
+        if (p < 0) 
+            return ""; 
+        position += rarr[p].length; result += narr[p]; pp = p; 
+    } 
+       return result;
+}
+function getnextletter(roman, position) {
+    for (i=0; i<warr.length; i++){
+        if ( roman.indexOf(warr[i], position) == position ) {
+            return;
+        }
+    }
+    for (i=0; i<rarr.length; i++){
+        if ( roman.indexOf(rarr[i], position) == position)
+        return i;
+    }
+    return;
 }
