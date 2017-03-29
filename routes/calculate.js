@@ -41,9 +41,17 @@ exports.equation = function (req) {
             var out = '';
             for (var k = 0; k < arr.length; k++) {
                 if(k==0){
-                    out +=parArr[arr[k]];
+                    if(arr[1]>arr[0]){
+                        out +='-'+parArr[arr[k]];
+                    }else{
+                        out +=parArr[arr[k]];
+                    }
                 }else if(k==1 && (i == 0 || i==1)){
-                    out +="-"+parArr[arr[k]]+"=";
+                    if(arr[1]>arr[0]){
+                        out +="+"+parArr[arr[k]]+"=";
+                    }else{
+                        out +="-"+parArr[arr[k]]+"=";
+                    }    
                 }else if(k==1 && i == 2){
                     out +="+"+parArr[arr[k]]+"=";
                 }else if(k==2){
@@ -57,11 +65,19 @@ exports.equation = function (req) {
             console.log("index is "+i);
             for (var k = 0; k < arr.length; k++) {
                 if(k==0){
-                    out +=parArr[arr[k]];
+                    if(arr[1]>arr[0]){
+                        out +=parArr[arr[1]]; 
+                    }else{
+                        out +=parArr[arr[k]];
+                    }
                 }else if(k==1 && i == 0){
                     out +="/"+parArr[arr[k]]+"=";
                 }else if(k==1 && (i == 1 || i==2)){
-                    out +="*"+parArr[arr[k]]+"=";
+                    if(arr[1]>arr[0]){
+                      out +="/"+parArr[arr[0]]+"=";      
+                    }else{    
+                      out +="*"+parArr[arr[k]]+"=";
+                    }    
                 }else if(k==2){
                     out += parArr[arr[k]];
                 }
@@ -81,7 +97,7 @@ var rarr = new Array("M",
 "XCL", "XCXL", "XCX", "LL", "LXL", "XLXL", "XLX", "XXXX", "IXIX",
 "IXV", "IXIV", "IXI", "IVIV", "IVI", "IIII");
 
-var carr= new Array("MDCCC", "MCD",
+/*var carr= new Array("MDCCC", "MCD",
 "MIII", "M",
 "M",
 "CM",
@@ -95,6 +111,7 @@ var carr= new Array("MDCCC", "MCD",
 "XVIII", "XIV", "XIII", "X",
 "VIII", "V",
 "IV");
+*/
 
 function convert_numeric(rom) { 
     var roman = rom.replace(/ /g, ""); 
