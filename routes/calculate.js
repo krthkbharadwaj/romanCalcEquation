@@ -5,7 +5,7 @@ exports.equation = function (first, second, third) {
 
     var arr = [];
     if (first == "" || second == "" || third == "" || first.includes('-') || second.includes('-') || third.includes('-')) {
-        return "Please enter proper number";
+        return "Please enter valid number";
     }
     /**
      * convert_numeric is function to convert the input roman numerals to numerics
