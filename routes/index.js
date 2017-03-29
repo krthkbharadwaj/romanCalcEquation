@@ -1,14 +1,15 @@
 var express = require('express');
 var router = express.Router();
-var c = require('./calculate');
+var calc = require('./calculate');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
+/* default page */
+router.get('/', function (req, res, next) {
   res.render('index', { title: 'Roman equation creator' });
 });
 
-router.post('/calc', function(req, res, next) {
-  res.render('index', { title: 'Roman equation creator', result: c.equation(req.body.first,req.body.second,req.body.third) });
+/**Used for equation creator url, render the same page with result */
+router.post('/calc', function (req, res, next) {
+  res.render('index', { title: 'Roman equation creator', result: calc.equation(req.body.first, req.body.second, req.body.third) });
 });
 
 module.exports = router;
